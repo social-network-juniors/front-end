@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from 'react-router-dom'
 
 import { UserActions } from "../redux/reducers/user.reducer";
 import { useDispatch } from "react-redux";
@@ -38,7 +39,8 @@ function Login(props) {
 			<input value={passwordValue} onChange={(e) => setPasswordValue(e.target.value)} type='password' placeholder='password' />
 
 			<div onClick={handleClick}>Войти</div>
-			<div>Ещё не зарегистрированы?</div>
+
+			<div><Link to='/registration'>Ещё не зарегистрированы?</Link></div>
 
 		</div>
 	);
