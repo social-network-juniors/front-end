@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from 'react-router-dom'
 import { UserActions } from "../redux/reducers/user.reducer";
 import { useDispatch } from "react-redux";
-
+import { registration } from '../api/rest/registration'
 function Registration(props) {
 
     //redux
@@ -15,7 +15,11 @@ function Registration(props) {
             UserActions.changeLogged(true)
         );
     };
-
+    const test = () => {
+        if (userData.login && userData.password) {
+            registration(userData.login, userData.password, userData.password);
+        }
+    }
     //vars and states
     const [userData, setUserData] = useState({
         login: null,
@@ -96,7 +100,7 @@ function Registration(props) {
                 </div>
             }
 
-            <div onClick={handleClick}>Зарегистрироваться</div>
+            <div onClick={test}>Зарегистрироваться</div>
             <div><Link to='/login'>Уже есть аккаунт?</Link></div>
 
         </div>
