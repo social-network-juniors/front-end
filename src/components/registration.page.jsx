@@ -17,6 +17,13 @@ function Registration(props) {
     };
 
     //vars and states
+    const [userData, setUserData] = useState({
+        login: null,
+        password: null,
+        name: null,
+        surname: null,
+        age: null,
+    });
     const [loginValue, setLoginValue] = useState('');
     const [passwordValue, setPasswordValue] = useState('');
     const [isLoginWrong, setIsLoginWrong] = useState(false);
@@ -36,7 +43,10 @@ function Registration(props) {
 
     //useEffects and funcs
     useEffect(() => {
-        passwordValue.length >= 8 || passwordValue === '' ? setIsPasswordSafe(true) : setIsPasswordSafe(false);
+        if (passwordValue.length >= 8 || passwordValue === '') {
+            setIsPasswordSafe(true);
+            setUserData((userData) => ({ ...userData, password: passwordValue }));
+        } else { setIsPasswordSafe(false) }
     }, [passwordValue])
 
     useEffect(() => {
@@ -45,33 +55,42 @@ function Registration(props) {
 
         if (!(isEmail || isNumber || loginValue === '')) {
             setIsLoginWrong(true);
-        } else { setIsLoginWrong(false) }
+        } else {
+            setIsLoginWrong(false);
+            setUserData((userData) => ({ ...userData, login: loginValue }));
+
+        }
+
     }, [loginValue])
 
-    const isValueCorrect = (value, regExp, inputState) => {
+    const isValueCorrect = (dataType, value, regExp, inputState) => {
         const isCorrect = regExp.test(value);
         console.log(value)
         if (!isCorrect && value !== '') {
             inputState(false)
-        } else { inputState(true) }
+
+        } else {
+            inputState(true)
+            setUserData((userData) => ({ ...userData, [dataType]: value }));
+
+        }
     }
 
     //render
     return (
         <div>
             <p>Регистрация</p>
-
             <input type="email" value={loginValue} onChange={(e) => setLoginValue(e.target.value)} type='text' placeholder='email or number' />
             {isLoginWrong && <div>Please, enter a correct email or number</div>}
             <input value={passwordValue} onChange={(e) => setPasswordValue(e.target.value)} type='password' placeholder='password' />
             { !isPasswordSafe && <div>Password should include 8 signs min </div>}
             { isLogAndPasswordEntered &&
                 <div>
-                    <input placeholder='имя' onChange={(e) => isValueCorrect(e.target.value, nameRegExp, setIsName)} />
+                    <input placeholder='имя' onChange={(e) => isValueCorrect('name', e.target.value, nameRegExp, setIsName)} />
                     {!isName && <div>Enter a correct name</div>}
-                    <input placeholder='фамилия' onChange={(e) => isValueCorrect(e.target.value, nameRegExp, setIsSurname)} />
+                    <input placeholder='фамилия' onChange={(e) => isValueCorrect('surname', e.target.value, nameRegExp, setIsSurname)} />
                     {!isSurname && <div>Enter a correct surname</div>}
-                    <input placeholder='возраст' onChange={(e) => isValueCorrect(e.target.value, ageRegExp, setIsAge)} />
+                    <input placeholder='возраст' onChange={(e) => isValueCorrect('age', e.target.value, ageRegExp, setIsAge)} />
                     {!isAge && <div>Enter a correct age</div>}
 
                 </div>
