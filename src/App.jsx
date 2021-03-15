@@ -1,7 +1,7 @@
 import React from "react";
 
 import "styles.scss";
-import { BrowserRouter, Switch, Route, Redirect, Link } from "react-router-dom";
+import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 
 import { useLogged } from "services/user.service";
@@ -23,6 +23,12 @@ function App() {
 							<Redirect to="/" /> : null
 					}
 				</Route>
+				<Route path="/registration" component={Registration}>
+					{
+						logged ?
+							<Redirect to="/" /> : null
+					}
+				</Route>
 				<Route path="/">
 					{
 						logged ?
@@ -30,9 +36,7 @@ function App() {
 
 					}
 				</Route>
-				<Route path="/registration" component={Registration}>
-					{<Registration />}
-				</Route>
+
 			</Switch>
 		</BrowserRouter>
 	);

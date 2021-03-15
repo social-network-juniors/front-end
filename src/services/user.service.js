@@ -1,4 +1,4 @@
-import {useState, useEffect} from "react";
+import { useState, useEffect } from "react";
 import store from "../redux/store";
 
 /* Regular */
@@ -18,3 +18,4 @@ export const useLogged = () => {
 
 	return logged;
 };
+
