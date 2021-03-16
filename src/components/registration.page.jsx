@@ -15,27 +15,27 @@ function Registration(props) {
             UserActions.changeLogged(true)
         );
     };
-    const test = () => {
-        if (userData.login && userData.password) {
-            registration(userData.login, userData.password, userData.password);
-        }
-    }
+
     //vars and states
     const [userData, setUserData] = useState({
         login: null,
         password: null,
+        passwordConfirmation: null,
         name: null,
-        surname: null,
+        lastName: null,
         age: null,
     });
+
     const [loginValue, setLoginValue] = useState('');
     const [passwordValue, setPasswordValue] = useState('');
     const [isLoginWrong, setIsLoginWrong] = useState(false);
     const [isPasswordSafe, setIsPasswordSafe] = useState(true);
 
     const [isName, setIsName] = useState(true);
-    const [isSurname, setIsSurname] = useState(true);
+    const [isLastName, setIsLastName] = useState(true);
     const [isAge, setIsAge] = useState(true);
+    const [passwordConfirmation, setPasswordConfirmation] = useState('')
+    const [isPasswordConfirmed, setIsPasswordConfirmed] = useState(false)
 
     const isLogAndPasswordEntered = isPasswordSafe && !isLoginWrong && passwordValue !== '' && loginValue !== '';
 
@@ -67,6 +67,16 @@ function Registration(props) {
 
     }, [loginValue])
 
+    useEffect(() => {
+        if (passwordValue === passwordConfirmation) {
+            setIsPasswordConfirmed(true);
+            setUserData((userData) => ({ ...userData, passwordConfirmation: passwordConfirmation }));
+        } else if (passwordConfirmation !== '') {
+            setIsPasswordConfirmed(false)
+        }
+
+    }, [passwordValue, passwordConfirmation])
+
     const isValueCorrect = (dataType, value, regExp, inputState) => {
         const isCorrect = regExp.test(value);
         console.log(value)
@@ -79,6 +89,16 @@ function Registration(props) {
 
         }
     }
+    const registerRequest = () => {
+        let isDataEntered = userData.login && userData.password && userData.passwordConfirmation && userData.name && userData.lastName && userData.age;
+        if (isDataEntered) {
+            registration(userData.login, userData.password, userData.passwordConfirmation, userData.name, userData.lastName, 1, 1, 2020);
+        } else {
+            console.log(userData);
+        };
+    }
+
+
 
     //render
     return (
@@ -88,19 +108,22 @@ function Registration(props) {
             {isLoginWrong && <div>Please, enter a correct email or number</div>}
             <input value={passwordValue} onChange={(e) => setPasswordValue(e.target.value)} type='password' placeholder='password' />
             { !isPasswordSafe && <div>Password should include 8 signs min </div>}
+            <input onChange={(e) => setPasswordConfirmation(e.target.value)} type='password' placeholder='Confirm password' />
+            { !isPasswordConfirmed && <div>Passwords are different</div>}
+
             { isLogAndPasswordEntered &&
                 <div>
                     <input placeholder='имя' onChange={(e) => isValueCorrect('name', e.target.value, nameRegExp, setIsName)} />
                     {!isName && <div>Enter a correct name</div>}
-                    <input placeholder='фамилия' onChange={(e) => isValueCorrect('surname', e.target.value, nameRegExp, setIsSurname)} />
-                    {!isSurname && <div>Enter a correct surname</div>}
-                    <input placeholder='возраст' onChange={(e) => isValueCorrect('age', e.target.value, ageRegExp, setIsAge)} />
+                    <input placeholder='фамилия' onChange={(e) => isValueCorrect('lastName', e.target.value, nameRegExp, setIsLastName)} />
+                    {!isLastName && <div>Enter a correct surname</div>}
+                    <input placeholder='dd.mm.yyyy' onChange={(e) => isValueCorrect('age', e.target.value, ageRegExp, setIsAge)} />
                     {!isAge && <div>Enter a correct age</div>}
 
                 </div>
             }
 
-            <div onClick={test}>Зарегистрироваться</div>
+            <div onClick={registerRequest}>Зарегистрироваться</div>
             <div><Link to='/login'>Уже есть аккаунт?</Link></div>
 
         </div>
