@@ -52,7 +52,12 @@ function Registration(props) {
         if (passwordValue.length >= 8 || passwordValue === '') {
             setIsPasswordSafe(true);
             setUserData((userData) => ({ ...userData, password: passwordValue }));
-        } else { setIsPasswordSafe(false) }
+        } else {
+            setTimeout(() => {
+                setIsPasswordSafe(false)
+            }, 1500);
+
+        }
     }, [passwordValue])
 
     useEffect(() => {
@@ -60,7 +65,9 @@ function Registration(props) {
         const isNumber = phoneNumberRegExp.test(loginValue) && loginValue.length > 10;
 
         if (!(isEmail || isNumber || loginValue === '')) {
-            setIsLoginWrong(true);
+            setTimeout(() => {
+                setIsLoginWrong(true);
+            }, 1500);
         } else {
             setIsLoginWrong(false);
             setUserData((userData) => ({ ...userData, login: loginValue }));
@@ -74,7 +81,9 @@ function Registration(props) {
             setIsPasswordConfirmed(true);
             setUserData((userData) => ({ ...userData, passwordConfirmation: passwordConfirmation }));
         } else if (passwordConfirmation !== '') {
-            setIsPasswordConfirmed(false)
+            setTimeout(() => {
+                setIsPasswordConfirmed(false)
+            }, 1500);
         }
 
     }, [passwordValue, passwordConfirmation])
@@ -82,7 +91,9 @@ function Registration(props) {
     const isValueCorrect = (dataType, value, regExp, inputState) => {
         const isCorrect = regExp.test(value);
         if (!isCorrect && value !== '') {
-            inputState(false)
+            setTimeout(() => {
+                inputState(false)
+            }, 1500);
 
         } else {
             inputState(true)
@@ -101,14 +112,14 @@ function Registration(props) {
             let day = dateArr[0];
 
             setIsBDate(true);
-
-            if (year >= 2006 || year <= 1900) { setIsBDate(false); }
-            if (month > 12 || month <= 0) { setIsBDate(false); }
-            if (day > 31 || day <= 0) { setIsBDate(false); }
-            if (littleMonths.includes(month) && day === 31) { setIsBDate(false); }
-            if (month == 2 && day >= 30) { setIsBDate(false); }
-            if (year % 4 !== 0 && month == 2 && day == 29) { setIsBDate(false); }
-
+            setTimeout(() => {
+                if (year >= 2006 || year <= 1900) { setIsBDate(false); }
+                if (month > 12 || month <= 0) { setIsBDate(false); }
+                if (day > 31 || day <= 0) { setIsBDate(false); }
+                if (littleMonths.includes(month) && day === 31) { setIsBDate(false); }
+                if (month == 2 && day >= 30) { setIsBDate(false); }
+                if (year % 4 !== 0 && month == 2 && day == 29) { setIsBDate(false); }
+            }, 1500);
             setUserData((userData) => ({ ...userData, bday: day, bmonth: month, byear: year }));
         }
     }
