@@ -1,0 +1,20 @@
+.Registration__title{
+    font-style: $primary-font;
+    text-align: center;
+}
+.Registration__wrapper{
+    display: flex;
+    flex-direction: column;
+}
+.Registration__container{
+    width: 396px;
+}
+// .Registration__button{
+//     background-color:  #3D41D7;
+// }
+.Registration__input{
+    & > .MuiInputBase-root > label {
+    margin: 15px;
+    color: #D3D3FD;
+    }
+}
