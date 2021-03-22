@@ -56,20 +56,22 @@ function Registration(props) {
         } else {
             setIsCorrect({ ...isCorrect, login: false });
         }
+
     }, [inputData.login])
 
     // password validation
     useEffect(() => {
-        if (inputData.password.length >= 8 || inputData.password === '') {
-            setIsCorrect({ ...isCorrect, password: true });
+        if (inputData.password == '') {
+            setIsCorrect({ ...isCorrect, password: true })
         } else {
-            setIsCorrect({ ...isCorrect, password: false });
+            setIsCorrect({ ...isCorrect, password: false })
         }
+        console.log(inputData.password);
     }, [inputData.password])
 
     // password confirmation validation
     useEffect(() => {
-        if (inputData.passwordConfirmation === inputData.password) {
+        if (inputData.passwordConfirmation === inputData.password || inputData.passwordConfirmation == '') {
             setIsCorrect({ ...isCorrect, passwordConfirmation: true });
         } else {
             setIsCorrect({ ...isCorrect, passwordConfirmation: false });
@@ -107,19 +109,16 @@ function Registration(props) {
     return (
         <div>
             <p>Регистрация</p>
-            <input type="email" onChange={(e) => setInputData({ ...inputData, login: e.target.value })} type='text' placeholder='email or number' />
-            {!isCorrect.login && <div>Please, enter a correct email or number</div>}
-            <input onChange={(e) => setInputData({ ...inputData, password: e.target.value })} type='password' placeholder='password' />
-            {!isCorrect.password && <div>Password should include 8 signs min </div>}
-            <input onChange={(e) => setInputData({ ...inputData, passwordConfirmation: e.target.value })} type='password' placeholder='Confirm password' />
-            {!isCorrect.passwordConfirmation && <div>Passwords are different</div>}
+            <TextField error={!isCorrect.login} helperText={isCorrect.login ? false : 'Введите верный телефон или почту'} type="email" onChange={(e) => setInputData({ ...inputData, login: e.target.value })} placeholder='Почта или телефон' />
+
+            <TextField error={!isCorrect.password} helperText={isCorrect.password ? false : 'Пароль должен содержать минимум 8 символов'} onChange={(e) => setInputData({ ...inputData, password: e.target.value })} placeholder='Пароль' />
+
+            <TextField error={!isCorrect.passwordConfirmation} helperText={isCorrect.passwordConfirmation ? false : 'Пароли не совпадают'} onChange={(e) => setInputData({ ...inputData, passwordConfirmation: e.target.value })} type='password' placeholder='Подтвердите пароль' />
             { isLogAndPasswordEntered &&
                 <div>
-                    <input placeholder='имя' onChange={(e) => setInputData({ ...inputData, name: e.target.value })} />
-                    {!isCorrect.name && <div>Enter a correct name</div>}
-                    <input placeholder='фамилия' onChange={(e) => setInputData({ ...inputData, lastName: e.target.value })} />
-                    {!isCorrect.lastName && <div>Enter a correct surname</div>}
-                    <TextField id="date" label="Birthday" type="date" />
+                    <TextField error={!isCorrect.name} helperText={isCorrect.name ? false : 'Имя должено содержать минимум 2 буквы'} placeholder='Имя' onChange={(e) => setInputData({ ...inputData, name: e.target.value })} />
+                    <TextField error={!isCorrect.lastName} helperText={isCorrect.lastName ? false : 'Фамилия должна содержать минимум 2 буквы'} placeholder='Фамилия' onChange={(e) => setInputData({ ...inputData, lastName: e.target.value })} />
+                    <TextField id="date" placeholder="Birthday" type="date" />
                 </div>
             }
             {/* <div onClick={registerRequest}>Зарегистрироваться</div> */}
