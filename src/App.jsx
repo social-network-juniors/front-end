@@ -4,7 +4,7 @@ import "./styles.scss";
 import {BrowserRouter, Switch, Route, Redirect} from "react-router-dom";
 import {connect} from "react-redux";
 
-import {useLogged} from "./services/user.service";
+import {useLogged} from "./services/UserService";
 import Login from "./components/login.page";
 import Profile from "./components/profile.page";
 import Registration from "./components/registration.page";
