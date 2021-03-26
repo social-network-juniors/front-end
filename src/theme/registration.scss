@@ -2,19 +2,40 @@
     font-style: $primary-font;
     text-align: center;
 }
-.Registration__wrapper{
+.Registration__login{
     display: flex;
     flex-direction: column;
 }
 .Registration__container{
     width: 396px;
 }
-// .Registration__button{
-//     background-color:  #3D41D7;
+// .Registration__data{
+//     width: 600px;
+//     height: 600px;
+//     display: grid;
+//     grid-template-rows: 120px 1fr ;
+//     grid-template-columns: 20% 1fr 15%;
+//     grid-gap: 10px;
+//     grid-template-areas:
+//     "name name"
+//     "date date date"; 
 // }
-.Registration__input{
-    & > .MuiInputBase-root > label {
+.Registration__name{
+    grid-area: name;
+}
+.Registration__date{
+    grid-area: date;
+}
+.Registration__wrapper{
+    & > .MuiButton-root {
     margin: 15px;
     color: #D3D3FD;
+    background-color: #3D41D7;
+        &:hover{
+            color: #3D41D7;
+            background-color:  #D3D3FD;
+            border: 2px solid #3D41D7;
+            transition-duration: .3s;
+        }
     }
 }

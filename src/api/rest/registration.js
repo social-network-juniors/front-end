@@ -11,7 +11,7 @@ export const registration = ({
     byear,
 }) => {
     return apiCall({
-        url: '/api/auth/register',
+        url: 'https://electroquest.ru/api/auth/register',
         method: 'post',
         data: {
             email,
@@ -24,8 +24,8 @@ export const registration = ({
             byear,
         }
     }).catch((error) => {
-        if (error.message === 'Sorry, wrong email address or password. Please, try again') {
-            alert('mistake');
+        if (error.message) {
+            console.log(error.message);
         } else { alert('super') }
     })
 }
