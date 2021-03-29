@@ -6,16 +6,13 @@ import { registration } from '../api/rest/registration';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button'
 function Registration(props) {
-    // //redux
-    // const dispatch = useDispatch();
-    // const handleClick = () => {
-    //     dispatch(
-    //         UserActions.replaceProfile({ username: "MichaleShumsky" })
-    //     );
-    //     dispatch(
-    //         UserActions.changeLogged(true)
-    //     );
-    // };
+    //redux
+    const dispatch = useDispatch();
+    const logIn = () => {
+        dispatch(
+            UserActions.changeLogged(true)
+        );
+    };
 
 
 
@@ -38,11 +35,13 @@ function Registration(props) {
         bdate: true,
     })
     const [dateInput, setDateInput] = useState('');
+    const [isdataEntered, setIsdataEntered] = useState(false);
     const isLogAndPasswordEntered = isCorrect.login && isCorrect.password && isCorrect.passwordConfirmation && inputData.passwordConfirmation !== '' && inputData.login !== '';
+
     //regular exp.
     let emailRegExp = /^[\w]{1}[\w-\.]*@[\w-]+\.[a-z]{2,4}$/i;
     let phoneNumberRegExp = /^[+]*[(]{0,1}[0-9]{1,3}[)]{0,1}[-\s\./0-9]*$/g;
-    let nameRegExp = /^[\wА-Яа-я]{2,20}$/i;
+    let nameRegExp = /^([а-яё]+|[a-z]+)$/i;
 
     // login validation
     useEffect(() => {
@@ -60,7 +59,7 @@ function Registration(props) {
     // password validation
     useEffect(() => {
 
-        if (inputData.password == '') {
+        if (inputData.password === '' || inputData.password.length >= 8) {
             setIsCorrect({ ...isCorrect, password: true })
         } else {
             setIsCorrect({ ...isCorrect, password: false })
@@ -95,9 +94,31 @@ function Registration(props) {
         }
     }, [inputData.lastName])
 
+    //date validation
+    useEffect(() => {
+        let nums = inputData.bdate;
+        let date = `${nums[0] || '_'}${nums[1] || '_'}/${nums[2] || '_'}${nums[3] || '_'}/${nums[4] || '_'}${nums[5] || '_'}${nums[6] || '_'}${nums[7] || '_'}`
+        setDateInput(date);
+        if (inputData.bdate[7]) {
 
+            let arr = date.split('/');
+            let day = arr[0];
+            let month = arr[1];
+            let year = arr[2];
+            let littleMonths = [2, 4, 6, 9, 11];
 
+            setIsCorrect({ ...isCorrect, bdate: true });
+            if (year >= 2006 || year <= 1900) { setIsCorrect({ ...isCorrect, bdate: false }) }
+            if (month > 12 || month <= 0) { setIsCorrect({ ...isCorrect, bdate: false }) }
+            if (day > 31 || day <= 0) { setIsCorrect({ ...isCorrect, bdate: false }) }
+            if (littleMonths.includes(inputData.bmonth) && day === 31) { setIsCorrect({ ...isCorrect, bdate: false }) }
+            if (month == 2 && day >= 30) { setIsCorrect({ ...isCorrect, bdate: false }) }
+            if (year % 4 !== 0 && month == 2 && day == 29) { setIsCorrect({ ...isCorrect, bdate: false }) }
+        }
 
+    }, [inputData.bdate, dateInput])
+
+    //date input handler
     const handleDate = (e) => {
         if (!isNaN(Number(e.key)) && inputData.bdate.length < 8) {
             setInputData({ ...inputData, bdate: [...inputData.bdate, e.key] })
@@ -106,43 +127,33 @@ function Registration(props) {
             let newArr = inputData.bdate.splice(0, inputData.bdate.length - 1)
             setInputData({ ...inputData, bdate: newArr })
         }
-
-
     }
+    //checker for registration request
     useEffect(() => {
-        let nums = inputData.bdate;
-        console.log(nums);
-        let date = `${nums[0] || '_'}${nums[1] || '_'}/${nums[2] || '_'}${nums[3] || '_'}/${nums[4] || '_'}${nums[5] || '_'}${nums[6] || '_'}${nums[7] || '_'}`
-        setDateInput(date);
-        if (inputData.bdate[7]) {
-            let arr = dateInput.split('/');
-
-            let day = arr[0];
-            let month = arr[1];
-            let year = arr[2];
-            const littleMonths = [2, 4, 6, 9, 11];
-            setIsCorrect({ ...isCorrect, bdate: true });
-            if (year >= 2006 || year <= 1900 || year != '') { setIsCorrect({ ...isCorrect, bdate: false }) }
-            if (month > 12 || month <= 0) { setIsCorrect({ ...isCorrect, bdate: false }) }
-            if (day > 31 || day <= 0) { setIsCorrect({ ...isCorrect, bdate: false }) }
-            if (littleMonths.includes(inputData.bmonth) && day === 31) { setIsCorrect({ ...isCorrect, bdate: false }) }
-            if (month == 2 && day >= 30) { setIsCorrect({ ...isCorrect, bdate: false }) }
-            if (year % 4 !== 0 && month == 2 && day == 29) { setIsCorrect({ ...isCorrect, bdate: false }) }
+        setIsdataEntered(true)
+        for (const input in inputData) {
+            if (input == '' || []) setIsdataEntered(false);
         }
-
-    }, [inputData.bdate])
+        for (const input in isCorrect) {
+            if (input == false) return setIsdataEntered(false);
+        }
+        console.log(isdataEntered);
+        console.log(isCorrect);
+    }, [inputData, isCorrect]);
 
     const registerRequest = () => {
         const bday = Number(dateInput.split('/')[0]);
         const bmonth = Number(dateInput.split('/')[1]);
         const byear = Number(dateInput.split('/')[2]);
-        registration(inputData.login, inputData.password, inputData.passwordConfirmation, inputData.name, inputData.lastName, bday, bmonth, byear)
-        // registration('ma2@icloud.com', '111111111', '111111111', 'Bake', 'Mo', 1, 1, 1999);
-        console.log(inputData)
+        if (isdataEntered) {
+            registration(inputData.login, inputData.password, inputData.passwordConfirmation, inputData.name, inputData.lastName, bday, bmonth, byear)
+            logIn();
+        }
 
 
 
     }
+
 
     //render
     return (
@@ -155,8 +166,8 @@ function Registration(props) {
             </div>
             { isLogAndPasswordEntered &&
                 <div className='Registration__data'>
-                    <TextField className='Registration__name' error={!isCorrect.name} helperText={isCorrect.name ? false : 'Имя должено содержать минимум 2 буквы'} placeholder='Имя' onChange={(e) => setInputData({ ...inputData, name: e.target.value })} />
-                    <TextField className='Registration__name' error={!isCorrect.lastName} helperText={isCorrect.lastName ? false : 'Фамилия должна содержать минимум 2 буквы'} placeholder='Фамилия' onChange={(e) => setInputData({ ...inputData, lastName: e.target.value })} />
+                    <TextField className='Registration__name' error={!isCorrect.name} helperText={isCorrect.name ? false : 'Имя должно быть либо на латинице, либо на кириллице'} placeholder='Имя' onChange={(e) => setInputData({ ...inputData, name: e.target.value })} />
+                    <TextField className='Registration__name' error={!isCorrect.lastName} helperText={isCorrect.lastName ? false : 'Фамилия должна быть либо на латинице, либо на кириллице'} placeholder='Фамилия' onChange={(e) => setInputData({ ...inputData, lastName: e.target.value })} />
                     <TextField error={!isCorrect.bdate} onKeyUp={(e) => handleDate(e)} value={dateInput} placeholder='__/__/____' type="text" />
                 </div>
             }
