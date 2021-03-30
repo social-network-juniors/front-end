@@ -59,6 +59,7 @@ function Login() {
 		e.preventDefault();
 		if (Object.keys(errors).length > 0)
 			return;
+			
 		dispatch(UserActions.login(values.email, values.password));
 	}
 

@@ -1,4 +1,4 @@
-import {login} from "../../api";
+import * as api from "../../api";
 
 /* Types */
 
@@ -36,8 +36,9 @@ export const UserActions = {
 	login: (login, password) =>
 		async () => {
 			try {
-				const resp = await login(login, password);
+				const resp = await api.login(login, password);
 				console.log(resp.data);
+			
 			} catch (err) {
 				console.error("Ошибка атворизации.", err.message);
 			}
