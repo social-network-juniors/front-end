@@ -22,7 +22,12 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+<<<<<<< HEAD
 # ###
 
 .env
 package-lock.json
+=======
+# IDE preferences and settings
+.idea/*
+>>>>>>> origin
