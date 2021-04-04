@@ -3,8 +3,10 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { thunksCreators } from "../../redux/reducers/friends.reducer";
 
-import FriendItem from './Friends';
-import Invitations from './Followers';
+import FriendsList from './Friends';
+import FollowersList from './Followers';
+import FollowedList from './Followed';
+
 
 import { getAuthorizationHeader, getAuthorizationToken } from '../../services'
 
@@ -15,7 +17,7 @@ import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import SearchIcon from '@material-ui/icons/Search';
 import SortIcon from '@material-ui/icons/Sort';
 import LoopIcon from '@material-ui/icons/Loop';
-import { getFollowed, getFollowers } from '../../api/rest/friends';
+import StarIcon from '@material-ui/icons/Star';
 
 
 export default function Friends() {
@@ -103,7 +105,8 @@ export default function Friends() {
             />
             <Tabs value={tab} onChange={handleTabsMenu}>
                 <Tab icon={<PeopleIcon />} label="Друзья" />
-                <Tab icon={<PersonAddIcon />} label="Заявки" />
+                <Tab icon={<PersonAddIcon />} label="Подписчики" />
+                <Tab icon={<StarIcon />} label="Подписки" />
             </Tabs>
             { tab === 0 && <div>
                 <Button aria-controls="simple-menu" aria-haspopup="true" onClick={handleFilter}><SortIcon /></Button>
@@ -117,10 +120,9 @@ export default function Friends() {
                     <MenuItem onClick={() => closeFilterMenu('default')}>По умолчанию</MenuItem>
                 </Menu>
             </div>}
-            {/* { tab === 0 ? <FriendItem friends={friends} /> : <Invitations invites={followers} />} */}
-            {tab === 0 && <FriendItem friends={friends} />}
-            {tab === 1 && <Invitations followers={followers} />}
-            {/* {tab === 2) &&} */}
+            {tab === 0 && <FriendsList friends={friends} />}
+            {tab === 1 && <FollowersList followers={followers} />}
+            {tab === 2 && <FollowedList followed={followed} />}
         </div >
     )
 }

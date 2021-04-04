@@ -5,7 +5,7 @@ import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
 import React from 'react'
 import { Link } from 'react-router-dom';
 
-export default function FriendItem(props) {
+export default function FriendsList(props) {
     let data = props.friends;
 
     let friends = data.map(
