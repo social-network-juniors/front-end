@@ -6,9 +6,10 @@ import { thunksCreators } from "../../redux/reducers/friends.reducer";
 import FriendsList from './Friends';
 import FollowersList from './Followers';
 import FollowedList from './Followed';
+import FoundUsersList from './FoundUsersList'
 
 
-import { getAuthorizationHeader, getAuthorizationToken } from '../../services'
+import { getAuthorizationHeader } from '../../services'
 
 import InputAdornment from '@material-ui/core/InputAdornment';
 import { Tab, Tabs, TextField, Menu, MenuItem, Button } from '@material-ui/core';
@@ -21,14 +22,17 @@ import StarIcon from '@material-ui/icons/Star';
 
 
 export default function Friends() {
+
+
     //redux
     const isLoading = useSelector(store => store.friends.isLoading);
     const friendsList = useSelector(store => store.friends.friends);
     const followersList = useSelector(store => store.friends.followers);
     const followedList = useSelector(store => store.friends.followed);
+    const foundUsersList = useSelector(store => store.friends.foundUsers);
 
     const dispatch = useDispatch();
-    let tokenHeader = getAuthorizationHeader()
+    let tokenHeader = getAuthorizationHeader();
 
     const getFriends = () => {
         dispatch(thunksCreators.getFriends(tokenHeader))
@@ -38,6 +42,9 @@ export default function Friends() {
     }
     const getFollowed = () => {
         dispatch(thunksCreators.getFollowed(tokenHeader))
+    }
+    const getFoundUsers = (search) => {
+        dispatch(thunksCreators.searchPeople(tokenHeader, search))
     }
 
     //setFriends
@@ -50,8 +57,9 @@ export default function Friends() {
 
     const [search, setSearch] = useState('');
     const [friends, setFriends] = useState(friendsList);
-    const [followers, setFollowers] = useState(followersList);
-    const [followed, setFollowed] = useState(followedList);
+    // const [followers, setFollowers] = useState(followersList);
+    // const [followed, setFollowed] = useState(followedList);
+    // const [foundUsers, setFoundUsers] = useState(foundUsersList);
 
     const [tab, setTab] = useState(0);
     const [filterAnchor, setFilterAnchor] = useState(null);
@@ -59,9 +67,12 @@ export default function Friends() {
 
     useEffect(() => {
         if (search != '') {
+            getFoundUsers(search);
             setFriends([...friends.filter((e) => e.name.toUpperCase().indexOf(search.toUpperCase(), 0) === 0 ||
                 e.lastName.toUpperCase().indexOf(search.toUpperCase(), 0) === 0
             )])
+
+
         } else { setFriends(friends) }
     }, [search])
 
@@ -70,7 +81,6 @@ export default function Friends() {
     //navs
     const handleTabsMenu = (e, newValue) => {
         setTab(newValue);
-        console.log(newValue);
     }
     const closeFilterMenu = (type) => {
         setFilterAnchor(null);
@@ -94,7 +104,7 @@ export default function Friends() {
     return (
         <div>
             {isLoading === true ? <LoopIcon /> : null}
-            <TextField label='Найти друга...' value={search} onFocus={() => setTab(0)} onChange={(e) => setSearch(e.target.value)} variant="outlined"
+            <TextField label='Поиск...' value={search} onFocus={() => setTab(0)} onChange={(e) => setSearch(e.target.value)} variant="outlined"
                 InputProps={{
                     endAdornment: (
                         <InputAdornment position="end">
@@ -121,8 +131,9 @@ export default function Friends() {
                 </Menu>
             </div>}
             {tab === 0 && <FriendsList friends={friends} />}
-            {tab === 1 && <FollowersList followers={followers} />}
-            {tab === 2 && <FollowedList followed={followed} />}
+            {tab === 0 && search !== '' && <FoundUsersList users={foundUsersList} />}
+            {tab === 1 && <FollowersList followers={followersList} />}
+            {tab === 2 && <FollowedList followed={followedList} />}
         </div >
     )
 }

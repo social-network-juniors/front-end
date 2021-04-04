@@ -1,4 +1,4 @@
-import { getFriends, getFollowers, getFollowed } from '../../api/rest/friends'
+import { getFriends, getFollowers, getFollowed, findUsers } from '../../api/rest/friends'
 
 export const UserActionTypes = {
     LOADING_STARTED: "LOADING_STARTED",
@@ -10,15 +10,18 @@ export const UserActionTypes = {
     // REJECT_INVITE: "REJECT_INVITE",
     SET_FOLLOWERS: "GET_FOLLOWERS",
     SET_FOLLOWED: "GET_FOLLOWED",
+    SET_FOUND: "SET_FOUND_USERS",
 };
 
 /* Reducer */
 
 const initState = {
+    isLoading: false,
     friends: [],
     followers: [],
     followed: [],
-    isLoading: false,
+    foundUsers: [],
+
 };
 
 export default (state = initState, action) => {
@@ -49,6 +52,12 @@ export default (state = initState, action) => {
                 ...state,
                 followed: action.payload
             }
+        case UserActionTypes.SET_FOUND:
+            return {
+                ...state,
+                foundUsers: action.payload
+            }
+
         /* DEFAULT */
         default:
             return state;
@@ -72,16 +81,25 @@ export const UserActions = {
     setFriends: (friends) => {
         return {
             type: UserActionTypes.SET_FRIENDS,
+            payload: friends,
         }
     },
-    setFriends: (followers) => {
+    setFollowers: (followers) => {
         return {
             type: UserActionTypes.SET_FOLLOWERS,
+            payload: followers,
         }
     },
-    setFriends: (follows) => {
+    setFollowed: (followed) => {
         return {
             type: UserActionTypes.SET_FOLLOWED,
+            payload: followed,
+        }
+    },
+    setFound: (users) => {
+        return {
+            type: UserActionTypes.SET_FOUND,
+            payload: users,
         }
     },
 
@@ -96,7 +114,7 @@ export const thunksCreators = {
             getFriends(user_token).then(
                 (res) => {
                     dispatch(UserActions.loadOff())
-                    dispatch(UserActions.setFriends(res.result))
+                    dispatch(UserActions.setFriends(res.data.result))
                 }
             )
 
@@ -108,7 +126,7 @@ export const thunksCreators = {
             getFollowers(user_token).then(
                 (res) => {
                     dispatch(UserActions.loadOff())
-                    dispatch(UserActions.setFollowers(res.result))
+                    dispatch(UserActions.setFollowers(res.data.result))
                 }
             )
 
@@ -120,7 +138,20 @@ export const thunksCreators = {
             getFollowed(user_token).then(
                 (res) => {
                     dispatch(UserActions.loadOff())
-                    dispatch(UserActions.setFollowed(res.result))
+                    dispatch(UserActions.setFollowed(res.data.result))
+                }
+            )
+
+        }
+    },
+    searchPeople: (user_token, name) => {
+        return (dispatch) => {
+            dispatch(UserActions.loadOn())
+            findUsers(user_token, name).then(
+                (res) => {
+                    dispatch(UserActions.loadOff())
+                    dispatch(UserActions.setFound(res.data.result))
+                    console.log(res.data.result)
                 }
             )
 

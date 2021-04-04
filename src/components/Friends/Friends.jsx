@@ -19,7 +19,7 @@ export default function FriendsList(props) {
     )
     let searchGlobal =
         <div>
-            <div>Друзья не найдены, глобальный поиск: </div>
+            <div>Друзья не найдены</div>
             <SearchIcon />
         </div>;
 
