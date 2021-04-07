@@ -6,9 +6,9 @@ export default function FollowersList(props) {
     const followers = followersData.map((follower) =>
         <div>
             <img src={follower.avatar} />
-            <div>{follower.first_name + ' ' + follower.second_name}</div>
-            <DoneIcon />
-            <CloseIcon />
+            <div>{follower.full_name}</div>
+            {/* <DoneIcon />
+            <CloseIcon /> */}
         </div>
     )
 

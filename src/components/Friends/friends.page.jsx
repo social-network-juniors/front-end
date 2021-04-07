@@ -7,7 +7,7 @@ import FriendsList from './Friends';
 import FollowersList from './Followers';
 import FollowedList from './Followed';
 import FoundUsersList from './FoundUsersList'
-
+import FriendRequests from './FriendRequests'
 
 import { getAuthorizationHeader } from '../../services'
 
@@ -30,7 +30,10 @@ export default function Friends() {
     const followersList = useSelector(store => store.friends.followers);
     const followedList = useSelector(store => store.friends.followed);
     const foundUsersList = useSelector(store => store.friends.foundUsers);
-    console.log(followedList)
+    const requestsList = useSelector(store => store.friends.requests);
+    console.log(friendsList)
+    console.log(followersList)
+
     const dispatch = useDispatch();
     let tokenHeader = getAuthorizationHeader();
 
@@ -46,12 +49,16 @@ export default function Friends() {
     const getFoundUsers = (search) => {
         dispatch(thunksCreators.searchPeople(tokenHeader, search))
     }
+    const getRequests = () => {
+        dispatch(thunksCreators.getRequests(tokenHeader))
+    }
 
     //setFriends
     useEffect(() => {
         getFriends()
         getFollowers()
         getFollowed()
+        getRequests()
     }, [])
 
 
@@ -114,9 +121,10 @@ export default function Friends() {
                 }}
             />
             <Tabs value={tab} onChange={handleTabsMenu}>
-                <Tab icon={<PeopleIcon />} label={'Друзья (' + friends.length + ')'} />
+                <Tab icon={<PeopleIcon />} label={'Друзья (' + friendsList.length + ')'} />
                 <Tab icon={<PersonAddIcon />} label={'Подписчики (' + followersList.length + ')'} />
                 <Tab icon={<StarIcon />} label={'Подписки (' + followedList.length + ')'} />
+                <Tab icon={<PersonAddIcon />} label={'Заявки (' + requestsList.length + ')'} />
             </Tabs>
             { tab === 0 && search === '' && <div>
                 <Button aria-controls="simple-menu" aria-haspopup="true" onClick={handleFilter}><SortIcon /></Button>
@@ -130,10 +138,11 @@ export default function Friends() {
                     <MenuItem onClick={() => closeFilterMenu('default')}>По умолчанию</MenuItem>
                 </Menu>
             </div>}
-            {tab === 0 && <FriendsList friends={friends} />}
+            {tab === 0 && <FriendsList friends={friendsList} />}
             {tab === 0 && search !== '' && <FoundUsersList users={foundUsersList} />}
             {tab === 1 && <FollowersList followers={followersList} />}
             {tab === 2 && <FollowedList followed={followedList} />}
+            {tab === 3 && <FriendRequests requests={requestsList} />}
         </div >
     )
 }

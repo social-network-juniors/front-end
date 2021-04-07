@@ -20,6 +20,7 @@ export default function FriendsList(props) {
     let tokenHeader = getAuthorizationHeader();
 
     const addFriend = (id) => {
+        // if (isInProcess) return;
         dispatch(thunksCreators.addToFriends(tokenHeader, id))
     }
     const follow = (id) => {

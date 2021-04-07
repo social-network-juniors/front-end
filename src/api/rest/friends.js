@@ -33,6 +33,14 @@ export const getFollowed = (header) => {
     })
 }
 
+export const getRequests = (header) => {
+    return apiCall({
+        url: 'https://electroquest.ru/api/friend/friend-requests-to-me',
+        method: 'post',
+        data: null,
+        headers: header
+    })
+}
 export const findUsers = (header, name) => {
 
     return apiCall({
@@ -60,7 +68,6 @@ export const followUser = (header, user_id) => {
         headers: header
     })
 }
-
 export const unfollowUser = (header, user_id) => {
 
     return apiCall({
@@ -70,4 +77,23 @@ export const unfollowUser = (header, user_id) => {
         headers: header
     })
 }
+export const acceptFriend = (header, user_id) => {
+
+    return apiCall({
+        url: 'https://electroquest.ru/api/friend/accept',
+        method: 'post',
+        data: { 'user_id': user_id },
+        headers: header
+    })
+}
+export const rejectFriend = (header, user_id) => {
+
+    return apiCall({
+        url: 'https://electroquest.ru/api/friend/reject',
+        method: 'post',
+        data: { 'user_id': user_id },
+        headers: header
+    })
+}
+
 

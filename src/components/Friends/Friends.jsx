@@ -12,7 +12,7 @@ export default function FriendsList(props) {
         (friend) =>
             <div>
                 <img src={friend.avatar} />
-                <div>{friend.first_name + ' ' + friend.second_name}</div>
+                <div>{friend.first_name + ' ' + friend.last_name}</div>
                 <Link to={`/profile/${friend.id}`}><Button color="secondary">Просмотреть профиль</Button></Link>
                 <Link to={`/chat/${friend.id}`}><Button><ChatBubbleOutlineIcon /></Button></Link>
             </div>

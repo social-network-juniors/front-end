@@ -10,6 +10,7 @@ export const UserActionTypes = {
     // REJECT_INVITE: "REJECT_INVITE",
     SET_FOLLOWERS: "GET_FOLLOWERS",
     SET_FOLLOWED: "GET_FOLLOWED",
+    SET_REQUESTS: "SET_REQUESTS",
     SET_FOUND: "SET_FOUND_USERS",
     PROCESS_STARTED: "PROCESS_STARTED",
     PROCESS_FINISHED: "PROCESS_FINISHED",
@@ -24,8 +25,8 @@ const initState = {
     friends: [],
     followers: [],
     followed: [],
+    requests: [],
     foundUsers: [],
-
 };
 
 export default (state = initState, action) => {
@@ -61,6 +62,11 @@ export default (state = initState, action) => {
                 ...state,
                 foundUsers: action.payload
             }
+        case UserActionTypes.SET_REQUESTS:
+            return {
+                ...state,
+                requests: action.payload
+            }
         case UserActionTypes.PROCESS_STARTED:
             return {
                 ...state,
@@ -71,6 +77,7 @@ export default (state = initState, action) => {
                 ...state,
                 isInProcess: false
             }
+
 
         /* DEFAULT */
         default:
@@ -116,6 +123,12 @@ export const UserActions = {
             payload: users,
         }
     },
+    setRequests: (requests) => {
+        return {
+            type: UserActionTypes.SET_REQUESTS,
+            payload: requests,
+        }
+    },
     startProcess: () => {
         return {
             type: UserActionTypes.PROCESS_STARTED,
@@ -138,7 +151,7 @@ export const thunksCreators = {
             api.getFriends(user_token).then(
                 (res) => {
                     dispatch(UserActions.loadOff())
-                    dispatch(UserActions.setFriends(res.data.result))
+                    dispatch(UserActions.setFriends(res.data.result.data))
                 }
             )
 
@@ -151,6 +164,7 @@ export const thunksCreators = {
                 (res) => {
                     dispatch(UserActions.loadOff())
                     dispatch(UserActions.setFollowers(res.data.result))
+                    console.log(res)
                 }
             )
 
@@ -188,7 +202,6 @@ export const thunksCreators = {
                 (res) => {
                     dispatch(UserActions.loadOff())
                     dispatch(UserActions.finishProcess())
-                    console.log(res)
                 }
             )
         }
@@ -201,7 +214,6 @@ export const thunksCreators = {
                 (res) => {
                     dispatch(UserActions.loadOff())
                     dispatch(UserActions.finishProcess())
-                    console.log(res)
                 }
             )
         }
@@ -214,11 +226,45 @@ export const thunksCreators = {
                 (res) => {
                     dispatch(UserActions.loadOff())
                     dispatch(UserActions.finishProcess())
-                    console.log(res)
                 }
             )
         }
-    }
+    },
+    getRequests: (user_token, id) => {
+        return (dispatch) => {
+            dispatch(UserActions.loadOn())
+            api.getRequests(user_token, id).then(
+                (res) => {
+                    dispatch(UserActions.setRequests(res.data.result))
+                    dispatch(UserActions.loadOff())
+                }
+            )
+        }
+    },
+    rejectFriend: (user_token, id) => {
+        return (dispatch) => {
+            dispatch(UserActions.loadOn())
+            dispatch(UserActions.startProcess())
+            api.rejectFriend(user_token, id).then(
+                (res) => {
+                    dispatch(UserActions.loadOff())
+                    dispatch(UserActions.finishProcess())
+                }
+            )
+        }
+    },
+    acceptFriend: (user_token, id) => {
+        return (dispatch) => {
+            dispatch(UserActions.loadOn())
+            dispatch(UserActions.startProcess())
+            api.acceptFriend(user_token, id).then(
+                (res) => {
+                    dispatch(UserActions.loadOff())
+                    dispatch(UserActions.finishProcess())
+                }
+            )
+        }
+    },
     // removeFromFriends:
 
     //     acceptFriend
