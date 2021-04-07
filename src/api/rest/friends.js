@@ -1,99 +1,43 @@
-import apiCall from '../apiCall'
 import makeRequest from "../index";
 
 export const getFriends = (header) => {
-
-    return apiCall({
-        url: 'https://electroquest.ru/api/friend/get',
-        method: 'post',
-        data: null,
-        headers: header
-    })
+    return makeRequest("friend/get", "POST", null, null, header)
 }
-
 
 export const getFollowers = (header) => {
-
-    return apiCall({
-        url: 'https://electroquest.ru/api/followers',
-        method: 'get',
-        data: null,
-        headers: header
-    })
+    return makeRequest("followers", "GET", null, null, header)
 }
 
-
 export const getFollowed = (header) => {
-
-    return apiCall({
-        url: 'https://electroquest.ru/api/followers/followed',
-        method: 'get',
-        data: null,
-        headers: header
-    })
+    return makeRequest("followers/followed", "GET", null, null, header)
 }
 
 export const getRequests = (header) => {
-    return apiCall({
-        url: 'https://electroquest.ru/api/friend/friend-requests-to-me',
-        method: 'post',
-        data: null,
-        headers: header
-    })
+    return makeRequest("friend/friend-requests-to-me", "POST", null, null, header)
 }
+
 export const findUsers = (header, name) => {
-
-    return apiCall({
-        url: 'https://electroquest.ru/api/profile/find-by-name',
-        method: 'post',
-        data: { 'name': name },
-        headers: header
-    })
+    return makeRequest("profile/find-by-name", "POST", { name }, null, header)
 }
+
 export const addToFriends = (header, user_id) => {
-
-    return apiCall({
-        url: 'https://electroquest.ru/api/friend/add',
-        method: 'post',
-        data: { 'user_id': user_id },
-        headers: header
-    })
+    return makeRequest("friend/add", "POST", { user_id }, null, header)
 }
+
 export const followUser = (header, user_id) => {
-
-    return apiCall({
-        url: 'https://electroquest.ru/api/followers/follow',
-        method: 'post',
-        data: { 'user_id': user_id },
-        headers: header
-    })
+    return makeRequest("followers/follow", "POST", { user_id }, null, header)
 }
+
 export const unfollowUser = (header, user_id) => {
-
-    return apiCall({
-        url: 'https://electroquest.ru/api/followers/unfollow',
-        method: 'post',
-        data: { 'user_id': user_id },
-        headers: header
-    })
+    return makeRequest("followers/unfollow", "POST", { user_id }, null, header)
 }
+
 export const acceptFriend = (header, user_id) => {
-
-    return apiCall({
-        url: 'https://electroquest.ru/api/friend/accept',
-        method: 'post',
-        data: { 'user_id': user_id },
-        headers: header
-    })
+    return makeRequest("friend/accept", "POST", { user_id }, null, header)
 }
-export const rejectFriend = (header, user_id) => {
 
-    return apiCall({
-        url: 'https://electroquest.ru/api/friend/reject',
-        method: 'post',
-        data: { 'user_id': user_id },
-        headers: header
-    })
+export const rejectFriend = (header, user_id) => {
+    return makeRequest("friend/reject", "POST", { user_id }, null, header)
 }
 
 

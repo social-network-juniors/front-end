@@ -5,12 +5,12 @@ const instance = axios.create({
 });
 
 
-const makeRequest = function (url, method, data, params) {
-
+const makeRequest = function (url, method, data, params, header) {
 	return instance(url, {
 		method, data, params, headers: {
 			'Accept': 'application/json',
-			'Content-Type': 'application/json'
+			'Content-Type': 'application/json',
+			...header
 		}
 	});
 };
@@ -18,3 +18,4 @@ export default makeRequest;
 
 export * from "./rest/login";
 export * from "./rest/registration";
+export * from "./rest/friends";
