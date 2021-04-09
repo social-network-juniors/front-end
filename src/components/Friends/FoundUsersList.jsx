@@ -7,7 +7,7 @@ import React from 'react'
 import { Link } from 'react-router-dom';
 
 import { useDispatch, useSelector } from "react-redux";
-import { thunksCreators } from "../../redux/reducers/friends.reducer";
+import { friendsThunk } from "../../redux/reducers/friends.reducer";
 
 import { getAuthorizationHeader } from '../../services'
 
@@ -21,12 +21,12 @@ export default function FriendsList(props) {
 
     const addFriend = (id) => {
         // if (isInProcess) return;
-        dispatch(thunksCreators.addToFriends(tokenHeader, id))
+        dispatch(friendsThunk.addToFriends(tokenHeader, id))
     }
     const follow = (id) => {
         if (isInProcess) return;
-        dispatch(thunksCreators.followUser(tokenHeader, id))
-        dispatch(thunksCreators.getFollowed(tokenHeader))
+        dispatch(friendsThunk.followUser(tokenHeader, id))
+        dispatch(friendsThunk.getFollowed(tokenHeader))
 
     }
     let users = data.map(

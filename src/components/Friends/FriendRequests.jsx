@@ -3,7 +3,7 @@ import React from 'react'
 import AddIcon from '@material-ui/icons/Add';
 import CloseIcon from '@material-ui/icons/Close';
 import { useDispatch, useSelector } from "react-redux";
-import { thunksCreators } from "../../redux/reducers/friends.reducer";
+import { friendsThunk } from "../../redux/reducers/friends.reducer";
 
 import { getAuthorizationHeader } from '../../services'
 
@@ -16,11 +16,11 @@ export default function FriendsRequest(props) {
 
     const acceptFriend = (id) => {
         if (isInProcess) return;
-        dispatch(thunksCreators.acceptFriend(tokenHeader, id))
+        dispatch(friendsThunk.acceptFriend(tokenHeader, id))
     }
     const rejectFriend = (id) => {
         if (isInProcess) return;
-        dispatch(thunksCreators.rejectFriend(tokenHeader, id))
+        dispatch(friendsThunk.rejectFriend(tokenHeader, id))
     }
 
     const requestsData = props.requests;

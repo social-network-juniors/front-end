@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 import { useDispatch, useSelector } from "react-redux";
-import { thunksCreators } from "../../redux/reducers/friends.reducer";
+import { friendsThunk } from "../../redux/reducers/friends.reducer";
 
 import FriendsList from './Friends';
 import FollowersList from './Followers';
@@ -39,19 +39,19 @@ export default function Friends() {
     let tokenHeader = getAuthorizationHeader();
 
     const getFriends = () => {
-        dispatch(thunksCreators.getFriends(tokenHeader))
+        dispatch(friendsThunk.getFriends(tokenHeader))
     }
     const getFollowers = () => {
-        dispatch(thunksCreators.getFollowers(tokenHeader))
+        dispatch(friendsThunk.getFollowers(tokenHeader))
     }
     const getFollowed = () => {
-        dispatch(thunksCreators.getFollowed(tokenHeader))
+        dispatch(friendsThunk.getFollowed(tokenHeader))
     }
     const getFoundUsers = (search) => {
-        dispatch(thunksCreators.searchPeople(tokenHeader, search))
+        dispatch(friendsThunk.searchPeople(tokenHeader, search))
     }
     const getRequests = () => {
-        dispatch(thunksCreators.getRequests(tokenHeader))
+        dispatch(friendsThunk.getRequests(tokenHeader))
     }
 
     //setFriends
@@ -83,8 +83,6 @@ export default function Friends() {
             setFriends([...friends.filter((e) => e.first_name.toUpperCase().indexOf(search.toUpperCase(), 0) === 0 ||
                 e.last_name.toUpperCase().indexOf(search.toUpperCase(), 0) === 0
             )])
-
-
         } else { setFriends(friendsList) }
     }, [search])
 
@@ -120,7 +118,7 @@ export default function Friends() {
                 InputProps={{
                     endAdornment: (
                         <InputAdornment position="end">
-                            <SearchIcon onClick={() => console.log('')} />
+                            <SearchIcon />
                         </InputAdornment>
                     ),
                 }}

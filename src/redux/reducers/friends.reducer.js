@@ -143,7 +143,7 @@ export const UserActions = {
 };
 
 //thunks
-export const thunksCreators = {
+export const friendsThunk = {
 
     getFriends: (user_token) => {
         return (dispatch) => {
@@ -189,6 +189,7 @@ export const thunksCreators = {
                 (res) => {
                     dispatch(UserActions.loadOff())
                     dispatch(UserActions.setFound(res.data.result))
+                    console.log(res)
                 }
             )
 
@@ -265,9 +266,4 @@ export const thunksCreators = {
             )
         }
     },
-    // removeFromFriends:
-
-    //     acceptFriend
-    // rejectInvite:
-
 }
