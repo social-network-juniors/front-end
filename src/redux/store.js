@@ -6,11 +6,12 @@ import thunk from "redux-thunk";
 
 import userReducer from "./reducers/user.reducer.js";
 import friendsReducer from "./reducers/friends.reducer.js";
-
+import chatReducer from "./reducers/chat.reducer.js";
 
 const rootReducer = combineReducers({
 	user: userReducer,
 	friends: friendsReducer,
+	chat: chatReducer
 });
 
 /* Store */

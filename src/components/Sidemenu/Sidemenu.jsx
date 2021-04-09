@@ -1,8 +1,8 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 
 import Waves from "../../assets/sidemenu-waves.svg";
 
-import {List, ListItemIcon, ListItemText, Collapse, ListSubheader} from "@material-ui/core";
+import { List, ListItemIcon, ListItemText, Collapse, ListSubheader } from "@material-ui/core";
 
 import SidemenuItem from "./SidemenuItem";
 import SidemenuCollapse from "./SidemenuCollapse";
