@@ -25,7 +25,7 @@ export default function Friends() {
 
 
     //redux
-    // const store = useSelector(store => store.friends);
+    const store = useSelector(store => store.friends);
     const isLoading = useSelector(store => store.friends.isLoading);
     const friendsList = useSelector(store => store.friends.friends);
     const followersList = useSelector(store => store.friends.followers);
@@ -63,16 +63,11 @@ export default function Friends() {
     }, [])
     useEffect(() => {
         setFriends(friendsList)
-
     }, [friendsList])
 
 
     const [search, setSearch] = useState('');
-    const [friends, setFriends] = useState(friendsList);
-    // const [followers, setFollowers] = useState(followersList);
-    // const [followed, setFollowed] = useState(followedList);
-    // const [foundUsers, setFoundUsers] = useState(foundUsersList);
-
+    const [friends, setFriends] = useState([]);
     const [tab, setTab] = useState(0);
     const [filterAnchor, setFilterAnchor] = useState(null);
 
@@ -113,7 +108,7 @@ export default function Friends() {
     }
     return (
         <div>
-            {isLoading === true ? <LoopIcon /> : null}
+            {isLoading !== 0 ? <LoopIcon /> : null}
             <TextField label='Поиск...' value={search} onFocus={() => setTab(0)} onChange={(e) => setSearch(e.target.value)} variant="outlined"
                 InputProps={{
                     endAdornment: (

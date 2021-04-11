@@ -1,8 +1,8 @@
 /* Reducer */
 
-export const UserActionTypes = {
-    LOADING_STARTED: "LOADING_STARTED",
-    LOADING_FINISHED: "LOADING_FINISHED",
+export const ChatActionTypes = {
+    LOADING_STARTED_CHAT: "LOADING_STARTED_CHAT",
+    LOADING_FINISHED_CHAT: "LOADING_FINISHED_CHAT",
 }
 
 const initState = {
@@ -32,12 +32,12 @@ const initState = {
 export default (state = initState, action) => {
     switch (action.type) {
 
-        case UserActionTypes.LOADING_STARTED:
+        case ChatActionTypes.LOADING_STARTED_CHAT:
             return {
                 ...state,
                 isLoading: true
             }
-        case UserActionTypes.LOADING_FINISHED:
+        case ChatActionTypes.LOADING_FINISHED_CHAT:
             return {
                 ...state,
                 isLoading: false
@@ -50,15 +50,15 @@ export default (state = initState, action) => {
 };
 
 //chat actions
-export const UserActions = {
+export const ChatAction = {
     loadOn: () => {
         return {
-            type: UserActionTypes.LOADING_STARTED,
+            type: ChatActionTypes.LOADING_STARTED_CHAT,
         }
     },
     loadOff: () => {
         return {
-            type: UserActionTypes.LOADING_FINISHED,
+            type: ChatActionTypes.LOADING_FINISHED_CHAT,
         }
     },
 };
@@ -69,12 +69,12 @@ export const thunksCreators = {
 
     getChats: (user_token) => {
         return (dispatch) => {
-            dispatch(UserActions.loadOn())
+            dispatch(ChatAction.loadOn())
             // api.getFriends(user_token).then(
             //     (res) => {
             setTimeout(() => {
-                dispatch(UserActions.loadOff())
-                // dispatch(UserActions.setChats(res.data.result.data))
+                dispatch(ChatAction.loadOff())
+                // dispatch(ChatAction.setChats(res.data.result.data))
             }, 750);
             // }/
             //)

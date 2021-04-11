@@ -7,8 +7,8 @@ export const UserActionTypes = {
 	LOGIN: "USER_LOGIN",
 	SET_PROFILE: "SET_PROFILE",
 	CHANGE_LOGGED: "CHANGE_LOGGED",
-	LOADING_STARTED: "LOADING_STARTED",
-	LOADING_FINISHED: "LOADING_FINISHED",
+	LOADING_STARTED_USER: "LOADING_STARTED_USER",
+	LOADING_FINISHED_USER: "LOADING_FINISHED_USER",
 };
 
 /* Reducer */
@@ -34,12 +34,12 @@ export default (state = initState, action) => {
 				logged: action.payload
 			}
 		/* LOADING */
-		case UserActionTypes.LOADING_STARTED:
+		case UserActionTypes.LOADING_STARTED_USER:
 			return {
 				...state,
 				isLoading: true
 			}
-		case UserActionTypes.LOADING_FINISHED:
+		case UserActionTypes.LOADING_FINISHED_USER:
 			return {
 				...state,
 				isLoading: false
@@ -56,12 +56,12 @@ export default (state = initState, action) => {
 export const UserActions = {
 	loadOn: () => {
 		return {
-			type: UserActionTypes.LOADING_STARTED,
+			type: UserActionTypes.LOADING_STARTED_USER,
 		}
 	},
 	loadOff: () => {
 		return {
-			type: UserActionTypes.LOADING_FINISHED,
+			type: UserActionTypes.LOADING_FINISHED_USER,
 		}
 	},
 	login: (login, password) =>
